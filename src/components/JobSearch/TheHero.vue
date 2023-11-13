@@ -32,8 +32,8 @@
           </div>
 
           <router-link to="/jobs/results" class="px-6 pb-4 text-sm text-brand-blue-1"
-            >See jobs</router-link
-          >
+            >See jobs
+          </router-link>
         </router-link>
       </template>
     </spot-light>
