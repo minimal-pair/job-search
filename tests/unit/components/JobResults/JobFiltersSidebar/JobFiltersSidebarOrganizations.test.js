@@ -11,9 +11,13 @@ describe("JobFiltersSidebarOrganizations", () => {
     const pinia = createTestingPinia();
     const userStore = useUserStore();
     const jobsStore = useJobsStore();
+    const $router = { push: vi.fn() };
 
     render(JobFiltersSidebarOrganizations, {
       global: {
+        mocks: {
+          $router
+        },
         plugins: [pinia],
         stubs: {
           FontAwesomeIcon: true
@@ -21,7 +25,7 @@ describe("JobFiltersSidebarOrganizations", () => {
       }
     });
 
-    return { jobsStore, userStore };
+    return { jobsStore, userStore, $router };
   };
 
   it("renders unique list of organizations from jobs", async () => {
@@ -36,18 +40,35 @@ describe("JobFiltersSidebarOrganizations", () => {
     expect(organizations).toEqual(["Google", "Amazon"]);
   });
 
-  it("communicates that user has selected checkbox for organization", async () => {
-    const { jobsStore, userStore } = renderJobFiltersSidebarOrganizations();
-    jobsStore.UNIQUE_ORGANIZATIONS = new Set(["Google", "Amazon"]);
+  describe("when user clicks checkbox", () => {
+    it("communicates that user has selected checkbox for organization", async () => {
+      const { jobsStore, userStore } = renderJobFiltersSidebarOrganizations();
+      jobsStore.UNIQUE_ORGANIZATIONS = new Set(["Google", "Amazon"]);
 
-    const button = screen.getByRole("button", { name: /organizations/i });
-    await userEvent.click(button);
+      const button = screen.getByRole("button", { name: /organizations/i });
+      await userEvent.click(button);
 
-    const googleCheckbox = screen.getByRole("checkbox", {
-      name: /google/i
+      const googleCheckbox = screen.getByRole("checkbox", {
+        name: /google/i
+      });
+      await userEvent.click(googleCheckbox);
+
+      expect(userStore.ADD_SELECTED_ORGANIZATIONS).toHaveBeenCalledWith(["Google"]);
     });
-    await userEvent.click(googleCheckbox);
 
-    expect(userStore.ADD_SELECTED_ORGANIZATIONS).toHaveBeenCalledWith(["Google"]);
+    it("navigates user to job  results page to see fresh batch of filtered jobs", async () => {
+      const { jobsStore, $router } = renderJobFiltersSidebarOrganizations();
+      jobsStore.UNIQUE_ORGANIZATIONS = new Set(["Google"]);
+
+      const button = screen.getByRole("button", { name: /organizations/i });
+      await userEvent.click(button);
+
+      const googleCheckbox = screen.getByRole("checkbox", {
+        name: /google/i
+      });
+      await userEvent.click(googleCheckbox);
+
+      expect($router.push).toHaveBeenCalledWith({ name: "JobResults" });
+    });
   });
 });
