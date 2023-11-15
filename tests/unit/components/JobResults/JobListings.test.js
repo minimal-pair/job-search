@@ -50,22 +50,28 @@ describe("JobListings", () => {
   });
 
   describe("when query params exclude page number", () => {
-    it("displays page number 1", () => {
+    it("displays page number 1", async () => {
       const queryParams = { page: undefined };
       const $route = createRoute(queryParams);
 
       renderJobListings($route);
+      const jobsStore = useJobsStore();
+      jobsStore.jobs = Array(15).fill({});
+      await screen.findAllByRole("listitem");
 
       expect(screen.getByText("Page 1")).toBeInTheDocument();
     });
   });
 
   describe("when query params include page number", () => {
-    it("displays page number", () => {
+    it("displays page number", async () => {
       const queryParams = { page: "3" };
       const $route = createRoute(queryParams);
 
       renderJobListings($route);
+      const jobsStore = useJobsStore();
+      jobsStore.jobs = Array(25).fill({});
+      await screen.findAllByRole("listitem");
 
       expect(screen.getByText("Page 3")).toBeInTheDocument();
     });
