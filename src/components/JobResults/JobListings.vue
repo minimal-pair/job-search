@@ -40,7 +40,7 @@
 import { computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
-import { useJobsStore } from "@/stores/jobs.js";
+import { useJobsStore } from "@/stores/jobs";
 import JobListing from "@/components/JobResults/JobListing.vue";
 
 import usePreviousAndNextPages from "@/composables/usePreviousAndNextPages";

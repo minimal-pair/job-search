@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import nextElementInList from "@/utils/nextElementInList.js";
+import nextElementInList from "@/utils/nextElementInList";
 
 export default {
   name: "TheHeadline",

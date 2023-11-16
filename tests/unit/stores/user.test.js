@@ -1,6 +1,6 @@
 import { createPinia, setActivePinia } from "pinia";
 
-import { useUserStore } from "@/stores/user.js";
+import { useUserStore } from "@/stores/user.ts";
 
 describe("state", () => {
   beforeEach(() => {
