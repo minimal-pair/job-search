@@ -1,7 +1,7 @@
 import type { Mock } from "vitest";
 import axios from "axios";
 
-import getJobs from "@/api/getJobs.js";
+import getJobs from "@/api/getJobs";
 import { describe } from "vitest";
 
 vi.mock("axios");

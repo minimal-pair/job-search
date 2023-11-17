@@ -1,6 +1,6 @@
 import { createPinia, setActivePinia } from "pinia";
 
-import { useUserStore } from "@/stores/user.ts";
+import { useUserStore } from "@/stores/user";
 
 describe("state", () => {
   beforeEach(() => {
@@ -20,6 +20,11 @@ describe("state", () => {
   it("stores job types that the user would like to filter jobs by", () => {
     const store = useUserStore();
     expect(store.selectedJobTypes).toEqual([]);
+  });
+
+  it("stores degrees that the user would like to filter jobs by", () => {
+    const store = useUserStore();
+    expect(store.selectedDegrees).toEqual([]);
   });
 });
 
@@ -49,6 +54,14 @@ describe("actions", () => {
       const store = useUserStore();
       store.ADD_SELECTED_JOB_TYPES(["Full-time", "Part-time"]);
       expect(store.selectedJobTypes).toEqual(["Full-time", "Part-time"]);
+    });
+  });
+
+  describe("ADD_SELECTED_DEGREES", () => {
+    it("updates degrees the user has chosen to filter jobs by", () => {
+      const store = useUserStore();
+      store.ADD_SELECTED_DEGREES(["Master's", "Bachelor's"]);
+      expect(store.selectedDegrees).toEqual(["Master's", "Bachelor's"]);
     });
   });
 });
